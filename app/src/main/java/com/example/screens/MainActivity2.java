@@ -19,7 +19,6 @@ public class MainActivity2 extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("name");
-            // Do something with the name and number
         }
         textOutput.setText(name);
     }

@@ -22,7 +22,7 @@ EditText textField;
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("name", textField.getText().toString()); // Optional
+                intent.putExtra("name", textField.getText().toString());
                 startActivity(intent);
             }
         });

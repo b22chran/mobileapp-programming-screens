@@ -1,42 +1,55 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+Skapade layouten för activity_main med en textview med en hälsningstext, en text-edit för att skriva in text 
+och en knapp för att kunna skicka vidare texten till activity_main2 (se img.png). I activity_main2 placerades en text-view
+där texten ska hamna samt en text-view där det står att det är "Submitted" (se img_1.png).
 
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+För att få knappen att skicka vidare det som står i fältet för text-edit så gjordes en klass för "Button"
+i MainActivity.java som kopplades till en variabel som heter "submitButton". Det skapades också en klass 
+för EditText som också kopplades till en variabel som heter textField.
+Variabeln submitButton kopplades till en setOnclickListener som i sin tur triggar funktionen onClick att 
+skicka det som står i text-field till MainActivity2 som en sträng som döpts till "name". 
+```
+Button submitButton;
+EditText textField;
+...
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        submitButton = findViewById(R.id.buttonSubmit);
+        textField = findViewById(R.id.editTextTextPersonName);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("name", textField.getText().toString()); // Optional
+                startActivity(intent);
+            }
+        });
+```
+Då en sträng skickas från MainActivty så behöver den tas emot som en String. Därför användes klassen String
+och kopplades till en variabel med namnet "name". Den sträng som skickas från MainActivity tas emot med 
+extras.getString och läggs över till den nya variablen, som döpts till "name". TextView-elementet från 
+activity_main2 har kopplats till variabeln textOutput och använder den inbyggda funktionen "setText()"
+för att presentera texten på MainActivity2. 
 
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+    TextView textOutput;
+    String name;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        textOutput = findViewById(R.id.textView);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("name");
+        }
+        textOutput.setText(name);
     }
-}
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
-
-![](android.png)
-
-Läs gärna:
-
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+![img.png](img.png)
+![img_1.png](img_1.png)
